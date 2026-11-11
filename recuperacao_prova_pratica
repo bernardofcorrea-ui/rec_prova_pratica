@@ -1,0 +1,80 @@
+-- insert
+
+insert into investidores (nome, cpf, nivel_experiencia)
+values
+('Sebastian Solace','001','1'),
+('John SQL','999','99'),
+('Mara Luiza','1223','4'),
+('Isaac Ford','14667','2'),
+('Heloísa Vídel','33565','6');
+
+insert into carteira (endereco_wallet, rede_blockchain, saldo_usd, status)
+values
+('0x71Cssau295LSAo20px','Ethereum','156.20','Em Analise'),
+('SQLDATABASEMASTER','ALLOFTHAT','1352.99','Pausada'),
+('62xAqo0XAqsww21lO0','Dogecoin','2.00','Bloqueada'),
+('000000000000000000','Bitcoin','2445121.54','Pausada'),
+('A0H7P2I?M5Phoenix','Solana','425.88','Bloqueada');
+
+insert into corretoras(nome_exchange, cnpj, email_suporte)
+values
+('Bradesco','acbdfe2ghi','bradesco@email.com.br'),
+('Banco do Brasil','xzywhjixwqa','banco@bdb.com.br'),
+('Itaú','llpanwasssa123','itau_suporte@email.com.br'),
+('ChildrenOfTheSky','runawayandhide','thisisnotatest@gmail.com'),
+('C6','24242424242424','suporte_c6bank@hotmail.com');
+
+insert into criptomoedas(nome_moeda, preco_unitario_usd, categoria)
+values
+('Dogecoin','10.00','Memecoin'),
+('Bitcoin','1235.54','Stablecoin'),
+('Ethereum','12244.78','DeFi'),
+('Solana','425.88','Layer1'),
+('FORTHECHILDOFTHESKY','24566777.02','Stablecoin');
+
+insert into transacoes_cripto(quantidade, valor_pago)
+values
+('12','1045667.22'),
+('999','245677.12'),
+('3356','845855563.00'),
+('2','1.50'),
+('425','13425.55');
+
+-- select
+
+select 
+	c.endereco_wallet,
+	c.rede_blockchain,
+	c.saldo_usd,
+	i.nome,
+	i.cpf
+from investidores i
+left join carteira c on i.id = c.id
+where c.status = 'Ativa', 'Em Analise';
+
+select 
+	co.nome_exchange,
+	t.valor_pago,
+from corretoras c
+left join transacoes_cripto t on c.id = t.id
+
+-- views
+
+create view vw_painel_carteiras as
+select 
+	c.endereco_wallet,
+	c.rede_blockchain,
+	c.saldo_usd,
+	i.nome,
+	i.cpf
+from investidores i
+left join carteira c on i.id = c.id;
+
+create view vw_investimento_total_carteiras as
+select 
+	c.endereco_wallet,
+	c.saldo_usd,
+	t.quantidade,
+	t.valor_pago
+from carteira c
+left join transacoes_cripto t on c.id = t.id
